@@ -1,0 +1,53 @@
+<table id="requestHistoryTable">
+	<thead>
+		<tr>
+			<th>Timestamp</th>
+			<th>Request Type</th>
+			<th>Requester</th>
+			<th>User Context</th>
+			<th>LLM Decision</th>
+			<th>LLM Response</th>
+			<th>Final Status</th>
+			<th>Shared Data</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for req in request_history %}
+		<tr>
+			<td>{{ req.timestamp }}</td>
+			<td>{{ req.type }}</td>
+			<td>{{ req.requester }}</td>
+			<td>{{ req.user_context }}</td>
+			<td>
+				{% if req.llm_decision == 'needs_approval' %}
+				<span style="color: orange;">Needs User Approval</span>
+				{% elif req.llm_decision == 'True' %}
+				<span style="color: green;">Approved</span>
+				{% elif req.llm_decision == 'False' %}
+				<span style="color: red;">Denied</span>
+				{% else %}
+				{{ req.llm_decision }}
+				{% endif %}
+			</td>
+			<td>{{ req.llm_response }}</td>
+			<td>
+				{% if req.status == 'pending_user_approval' %}
+				<span style="color: orange;">Pending User Approval</span>
+				{% elif req.status == 'approved by user' %}
+				<span style="color: green;">Approved by User</span>
+				{% elif req.status == 'denied by user' %}
+				<span style="color: red;">Denied by User</span>
+				{% else %}
+				{{ req.status }}
+				{% endif %}
+			</td>
+			<td>
+				{% if req.shared_data %}
+				<pre>{{ req.shared_data | tojson(indent=2) }}</pre>
+				{% else %}
+				-
+				{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
