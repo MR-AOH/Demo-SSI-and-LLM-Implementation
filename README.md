@@ -1,4 +1,4 @@
-# Smart Car Data Access Control System with Self-Sovereign Identity (SSI)
+# Demonstration of concept How can we Enhancing Privacy and Security of Smart Vehicles using Self-Sovereign Identity (SSI) and LLM
 
 A Flask-based web application that simulates a smart car's data access control system using Google's Gemini AI for decision-making. The system leverages **Self-Sovereign Identity (SSI)** to give users full control over their data, ensuring privacy and security while managing access to car sensor data based on user context, requester type, and predefined policies.
 
@@ -24,17 +24,21 @@ The system integrates **Self-Sovereign Identity (SSI)** to empower users with fu
 5. **Tamper-Proof Logs**: All access requests and approvals are recorded on a decentralized ledger, ensuring transparency and auditability.
 
 ## Project Structure
-smart-car-access-control/
-├── app.py # Main Flask application
-├── requester.py # Test client for sending requests
-├── models/
-│ ├── init.py
-│ ├── car.py # Smart car simulator
-│ ├── wallet.py # SSI wallet implementation
-│ └── decision_engine.py # LLM-based decision engine
-└── README.md
+   ```bash
+   Demo-SSI-and-LLM-Implementation/
+   ├── app.py                 # Main Flask application
+   ├── requester.py           # Test client for sending requests
+   ├── models/
+   │   ├── __init__.py
+   │   ├── car.py            # Smart car simulator
+   │   ├── wallet.py         # SSI wallet implementation
+   │   └── decision_engine.py # LLM-based decision engine
+   └── README.md
+```
 
-Copy
+
+
+
 
 ## Prerequisites
 
@@ -49,49 +53,45 @@ Copy
    ```bash
    git clone https://github.com/yourusername/smart-car-access-control.git
    cd smart-car-access-control
-Install required packages:
+   
+2. Install required packages:
 
-bash
-Copy
-pip install flask google-generativeai requests
-Set up your Google API key:
+`pip install flask google-generativeai requests `
 
-Get an API key from Google AI Studio (https://makersuite.google.com/app/apikey)
+3. Set up your Google API key:
 
-Replace the API_KEY in app.py:
+- Get an API key from Google AI Studio (https://makersuite.google.com/app/apikey)
 
-python
-Copy
-API_KEY = "Your-API-Key-Here"
-Usage
-Start the Flask server:
+- Replace the API_KEY in app.py:
 
-bash
-Copy
-python app.py
-Access the dashboard:
+` API_KEY = "Your-API-Key-Here" `
 
-Open http://localhost:5000 in your web browser
+
+## Start the Flask server:
+
+` flask run `
+
+## Access the dashboard:
+
+- Open http://localhost:5000 in your web browser
 
 The dashboard shows real-time sensor data and access requests
 
-Test requests using requester.py:
+## Test requests using requester.py:
 
-bash
-Copy
-python requester.py
-User Context
+` python requester.py `
+
+## User Context:
+
 The system's behavior changes based on the user context. Available contexts:
 
-Car is driving on the road
-
-Car is parked at home
-
-Car is at the mechanic
-
-Car is at a charging station
-
-Car is in an accident
+| User Context           | Behavior Changes                         |
+| ---------------------- | ---------------------------------------- |
+| 🚗 Driving on the road | Standard access rules apply              |
+| 🏠 Parked at home      | Minimal data access granted              |
+| 🛠️ At the mechanic     | Mechanics may request battery/speed data |
+| ⚡ Charging station    | Charging-related data accessible         |
+| 🚨 In an accident      | Emergency services get priority access   |
 
 Important: Changing the user context may affect access control decisions. For example:
 
@@ -99,67 +99,48 @@ Emergency services might get priority access during accidents
 
 Mechanics might get easier access when the car is at the service center
 
-Access Control Rules
-Mechanic Requests:
+## 🚗 User Contexts & Access Control Rules:
 
-Can access battery data with permission
+| Requester Type          | GPS                    | Speed                 | Battery |
+| ----------------------- | ---------------------- | --------------------- | ------- |
+| **Mechanic**            | ❌                     | 🔒 (Emergencies only) | ✅      |
+| **Roadside Assistance** | ✅                     | ❌                    | ❌      |
+| **Emergency Services**  | 🔒 (Approval required) | 🔒                    | 🔒      |
 
-Needs approval for speed data during emergencies
+✅ = Allowed | ❌ = Denied | 🔒 = Requires Approval
 
-Other data types are denied
+## 🛠️ SSI Wallet Configuration
 
-Roadside Assistance:
+Users can define access policies for different data types in the dashboard:
 
-Can access GPS data with permission
+- Data Types: GPS, Speed, Battery
+- Requesters: Emergency Services, Mechanics, Roadside Assistance
 
-Other data types are denied
+## 🧪 Testing
 
-Emergency Services:
-
-All requests during emergencies require user approval
-
-Higher priority during accident contexts
-
-SSI Wallet Configuration
-The dashboard allows configuration of access policies for different data types:
-
-GPS
-
-Speed
-
-Battery
-
-Each data type can be configured for different requesters:
-
-Emergency Services
-
-Mechanics
-
-Roadside Assistance
-
-Testing
 Use requester.py to test different scenarios:
 
+```
 send_request("gps", "emergency", is_emergency=True)
 send_request("speed", "mechanic", is_emergency=False)
 send_request("battery", "roadside_assistance", is_emergency=False)
-Security Notes
-Keep your API key secure and never commit it to version control
+```
 
-Use environment variables in production
+## ⚠️ Security Notes
 
-The current implementation uses in-memory storage and is for demonstration purposes only
+- Keep your API key secure and never commit it to version control.
+- Use environment variables in production.
+- This implementation is for demonstration purposes only; secure deployments should use encrypted storage.
 
-Contributing
-Fork the repository
+## 🤝 Contributing
 
-Create your feature branch
+- Fork the repository
+- Create a feature branch
 
-Commit your changes
+🎯 Questions? Issues?
 
-Push to the branch
+Feel free to open an issue or reach out!
 
-Create a new Pull Request
 
-License
+📜 License
 This project is licensed under the MIT License - see the LICENSE file for details.
